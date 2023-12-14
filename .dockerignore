@@ -1,0 +1,4 @@
+/node_modules
+Dockerfilepackage-lock.json
+.env
+docker-compose*

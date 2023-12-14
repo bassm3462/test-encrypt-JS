@@ -1,0 +1,19 @@
+version: '3'
+services:
+  node-app:
+    build: .
+    #  context: .
+    #  args:
+    #   - NODE_ENV=devlopment    
+      #  context: .
+      #   target:devlopment
+
+    ports:
+      - "4000:4000" 
+    environment:
+     - NODE_ENV=devlopment  
+    env_file:  
+     - ./.env
+    command: npm start 
+    # npm run start node js
+    

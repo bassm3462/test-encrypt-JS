@@ -1,0 +1,49 @@
+version: '3'
+services:
+  node-app:
+    container_name: testnodejs
+    build: .
+    volumes: 
+      - ./src:/app/src:ro
+    ports:
+      - "4000:4000" 
+    env_file:  
+     - ./.env
+    command: npm run dev
+    depends_on:
+      - mongo
+    # run container use nodemon
+  mongo:
+    image: mongo
+    restart: always
+    volumes:
+      - mongo-db:/data/db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+  mongo-express:
+    image: mongo-express
+    restart: always
+    ports:
+      - 8081:8081
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: example
+      ME_CONFIG_MONGODB_URL: mongodb://root:example@mongo:27017/
+    depends_on:
+      - mongo
+   
+  nginx:
+    image: nginx:latest  # Corrected image name
+    restart: always
+    volumes:
+      - ./nginx/default.conf.template:/etc/nginx/conf.d/default.conf.template
+    ports:
+      - "8080:80"
+    depends_on:
+      - node-app
+
+  
+volumes:
+  mongo-db:
+
